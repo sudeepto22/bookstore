@@ -1,0 +1,5 @@
+{
+  "name": "BookStore",
+  "description": "A Simple Book Store App",
+  "keywords": ["node", "express", "heroku"]
+}

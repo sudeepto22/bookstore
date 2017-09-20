@@ -1,0 +1,94 @@
+<html>
+<head>
+  <title>BookStore</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"></link>
+  <link rel="stylesheet" href="css/style.css"></link>
+
+  <script src="/bower_components/jquery/dist/jquery.js"></script>  
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="url.js"></script>
+</head>
+<body>
+
+      <nav class="navbar navbar-default">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed"
+                data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                   </button>
+                   <a class="navbar-brand" href="/">Bookstore</a>
+                  </div>
+                  <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                      <li><a href="/add_book.html">Add Book</a></li>
+                    </ul>
+                  </div>
+            </div>
+      </nav>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+
+
+
+                        <script>
+                              var xhr  = new XMLHttpRequest()
+                              xhr.open('GET', url, true)
+                              xhr.onload = function () {
+                                    var books = JSON.parse(xhr.responseText);
+                                    if (xhr.readyState == 4 && xhr.status == "200") {
+                                          console.table(books);
+                                          for(var book in books){
+                                                var a1 = document.createElement('div');
+                                                  a1.className = 'col-md-6';
+                                                  a1.innerHTML =
+                                                    "<img class=\"thumbnail\" src="+books[book].image_url+"></img>"+
+                                                    "<h3>"+books[book].title+"</h3>"+
+                                                    "<p>-by "+books[book].author+"</p>"+
+                                                    "<a class=\"btn btn-primary\" href=\"/book_details.html?id="+books[book]._id+"\">View Details</a><br><br><br><br>";
+                                                  document.getElementById('bookData').appendChild(a1);
+
+                                          }
+                                            
+                                    } else {
+                                          console.error(books);
+                                    }
+                              }
+                              xhr.send(null);
+                        </script>
+
+
+
+
+
+
+            <div class="panel panel-default">
+
+                          <div class="panel-heading">
+                            <h3 class="panel-title">Latest Books</h3>
+                          </div>
+                          <div class="panel-body">
+                              <div class="col-md-12" id="bookData">
+                                    
+                                    
+                              </div>
+                          </div>
+                        </div>
+                  </div>
+        </div>
+      </div>
+
+
+      
+</body>
+</html>

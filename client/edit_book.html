@@ -1,0 +1,176 @@
+<html>
+<head>
+  <title>BookStore</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"></link>
+  <link rel="stylesheet" href="css/style.css"></link>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>  
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <script src="url.js"></script>
+</head>
+<body>
+
+      <nav class="navbar navbar-default">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed"
+                data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                   </button>
+                   <a class="navbar-brand" href="/">Bookstore</a>
+                  </div>
+                  <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                      <li><a href="/add_book.html">Add Book</a></li>
+                    </ul>
+                  </div>
+            </div>
+      </nav>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Add Book</h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <form>
+                      <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="Title">
+                      </div>
+                      <div class="form-group">
+                        <label>Author</label>
+                        <input type="text" class="form-control" id="author" placeholder="Author">
+                      </div>
+                      <div class="form-group">
+                        <label>Genre</label>
+                        <input type="text" class="form-control" id="genre" placeholder="Genre">
+                      </div>
+                      <div class="form-group">
+                        <label>Publisher</label>
+                        <input type="text" class="form-control" id="publisher" placeholder="Publisher">
+                      </div>
+                      <div class="form-group">
+                        <label>Pages</label>
+                        <input type="text" class="form-control" id="pages" placeholder="Pages">
+                      </div>
+                      <div class="form-group">
+                        <label>Description</label>
+                        <textarea type="text" class="form-control" id="description" placeholder="Description" rows="5"></textarea>
+                      </div>
+                     <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="text" class="form-control" id="image_url" placeholder="Image URL">
+                      </div>
+                      <div class="form-group">
+                        <label>Buy URL</label>
+                        <input type="text" class="form-control" id="buy_url" placeholder="Buy URL">
+                      </div>
+                      <button onclick="updateBook()" class="btn btn-primary">Update</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <script>
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+          var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+              sURLVariables = sPageURL.split('&'),
+              sParameterName,
+              i;
+
+          for (i = 0; i < sURLVariables.length; i++) {
+              sParameterName = sURLVariables[i].split('=');
+
+              if (sParameterName[0] === sParam) {
+                  return sParameterName[1] === undefined ? true : sParameterName[1];
+              }
+          }
+      };
+
+      var checkNull = function checkNull(arg) {
+          if(arg==null){
+            return "";
+          }
+          else{
+            return arg;
+          }
+      };
+
+        var id = getUrlParameter('id');
+        if(id!=null){
+
+          var xhr  = new XMLHttpRequest();
+          xhr.open('GET', url+'/'+id, true);
+          xhr.onload = function () {
+            var book = JSON.parse(xhr.responseText);
+            if (xhr.readyState == 4 && xhr.status == "200") {
+              console.log(book);
+              document.getElementById('title').value = checkNull(book.title);
+              document.getElementById('author').value = checkNull(book.author);
+              document.getElementById('genre').value = checkNull(book.genre);
+              document.getElementById('publisher').value = checkNull(book.publisher);
+              document.getElementById('pages').value = checkNull(book.pages);
+              document.getElementById('description').value = checkNull(book.description);
+              document.getElementById('buy_url').value = checkNull(book.buy_url);            
+              document.getElementById('image_url').value = checkNull(book.image_url);
+
+            } else {
+              console.error(book);
+            }
+          }
+          xhr.send(null);
+        }
+
+        function updateBook(){
+          if(id!=null){
+
+            var data = {};
+            data.title = document.getElementById("title").value;
+            data.author  = document.getElementById("author").value;
+            data.genre  = document.getElementById("genre").value;
+            data.publisher  = document.getElementById("publisher").value;
+            data.pages  = document.getElementById("pages").value;
+            data.description  = document.getElementById("description").value;
+            data.buy_url  = document.getElementById("buy_url").value;
+            data.image_url  = document.getElementById("image_url").value;
+            var json = JSON.stringify(data);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", url+'/'+id, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function () {
+              var book = JSON.parse(xhr.responseText);
+              if (xhr.readyState == 4 && xhr.status == "200") {
+                location.href='/';
+              } else {
+                console.error(book);
+              }
+            }
+            xhr.send(json);
+
+        }
+      }
+        
+      </script>
+
+</body>
+</html>
