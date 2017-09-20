@@ -1,6 +1,8 @@
 # bookstore
 A simple bookstore app using node.js and mongoDB
 
+Live Sample : https://sudeeptobookstore.herokuapp.com/
+
 This project runs on localhost:5000
 
 Start the mongoDB server:
